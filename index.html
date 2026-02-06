@@ -18,20 +18,29 @@ body{
   align-items:center;
   height:100vh;
   text-align:center;
+  transition:background 0.5s;
 }
 
 #text{
   width:85%;
-  max-width:800px;
+  max-width:850px;
   font-size:28px;
-  line-height:1.6;
+  line-height:1.7;
   opacity:0;
   transition:opacity 1.5s;
 }
 
 .final{
-  font-size:40px;
-  letter-spacing:2px;
+  font-size:46px;
+  letter-spacing:3px;
+  color:#ffd6ec;
+  text-shadow:0 0 20px #ff8bd1,0 0 40px #ff8bd1;
+  animation:glow 2s infinite alternate;
+}
+
+@keyframes glow{
+  from{text-shadow:0 0 10px #ff8bd1;}
+  to{text-shadow:0 0 40px #ff8bd1,0 0 70px #ff8bd1;}
 }
 
 .tap{
@@ -62,6 +71,11 @@ body{
   from{opacity:0.2}
   to{opacity:1}
 }
+
+/* lightning flash */
+.flash{
+  background:white !important;
+}
 </style>
 </head>
 
@@ -70,24 +84,39 @@ body{
 <div id="text"></div>
 <div class="tap">tap anywhere</div>
 
-<audio id="music" loop>
-  <source src="music.mp3" type="audio/mpeg">
+<!-- rain -->
+<audio id="rain" loop>
+  <source src="rain.mp3" type="audio/mpeg">
+</audio>
+
+<!-- heartbeat -->
+<audio id="heartbeat">
+  <source src="heartbeat.mp3" type="audio/mpeg">
 </audio>
 
 <script>
-// start music on first tap
+// start rain on first tap
 document.body.addEventListener("click",()=>{
-  document.getElementById("music").play();
+  document.getElementById("rain").volume=0.4;
+  document.getElementById("rain").play();
 },{once:true});
 
-// random stars
-for(let i=0;i<120;i++){
+// stars
+for(let i=0;i<160;i++){
   let s=document.createElement("div");
   s.className="star";
   s.style.left=Math.random()*100+"vw";
   s.style.top=Math.random()*100+"vh";
   document.body.appendChild(s);
 }
+
+// thunder flash randomly
+setInterval(()=>{
+  if(Math.random()<0.3){
+    document.body.classList.add("flash");
+    setTimeout(()=>document.body.classList.remove("flash"),120);
+  }
+},6000);
 
 // story text
 const lines = [
@@ -119,6 +148,12 @@ function showText(){
   setTimeout(()=>{
     textDiv.innerHTML=lines[i];
     textDiv.style.opacity=1;
+
+    // heartbeat on final line
+    if(i===lines.length-1){
+      document.getElementById("heartbeat").play();
+    }
+
   },800);
 }
 
@@ -129,7 +164,6 @@ function nextText(){
   }
 }
 
-// first line
 showText();
 </script>
 
