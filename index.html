@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>What If We Never Met</title>
+
+<style>
+body{
+  margin:0;
+  padding:0;
+  background:black;
+  overflow:hidden;
+  font-family:'Georgia',serif;
+  color:white;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
+  text-align:center;
+}
+
+#text{
+  width:85%;
+  max-width:800px;
+  font-size:28px;
+  line-height:1.6;
+  opacity:0;
+  transition:opacity 1.5s;
+}
+
+.final{
+  font-size:40px;
+  letter-spacing:2px;
+}
+
+.tap{
+  position:absolute;
+  bottom:40px;
+  font-size:14px;
+  opacity:0.6;
+  animation:blink 1.5s infinite;
+}
+
+@keyframes blink{
+  0%{opacity:0.2}
+  50%{opacity:1}
+  100%{opacity:0.2}
+}
+
+/* stars */
+.star{
+  position:absolute;
+  width:2px;
+  height:2px;
+  background:white;
+  opacity:0.8;
+  animation:twinkle 2s infinite alternate;
+}
+
+@keyframes twinkle{
+  from{opacity:0.2}
+  to{opacity:1}
+}
+</style>
+</head>
+
+<body onclick="nextText()">
+
+<div id="text"></div>
+<div class="tap">tap anywhere</div>
+
+<audio id="music" loop>
+  <source src="music.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+// start music on first tap
+document.body.addEventListener("click",()=>{
+  document.getElementById("music").play();
+},{once:true});
+
+// random stars
+for(let i=0;i<120;i++){
+  let s=document.createElement("div");
+  s.className="star";
+  s.style.left=Math.random()*100+"vw";
+  s.style.top=Math.random()*100+"vh";
+  document.body.appendChild(s);
+}
+
+// story text
+const lines = [
+
+"What if we never met?",
+
+"What if that prank never happened...?<br><br>We wouldn't talk like we do now.<br>I wouldn't have sent you a friend request.<br>We would have no random conversations.<br>No stupid jokes and pranks.<br>And no fights.",
+
+"You would still be you.<br>I would still be me.",
+
+"You'd still laugh and still study and still live your life.<br><br>And I'll probably spend my time trying to win her back.<br>I would probably keep drowning in guilt like that.",
+
+"...But something would be missing.",
+
+"We'll live and live and live without talking like we do.<br>Without laughing or even sharing stuff.<br><br>Less chaos. Less memories.<br>Less smiles on random days.<br>And less you in my life.",
+
+"Maybe you would've been fine.<br>Maybe your life would go on normally.<br><br>And for me?<br>I would be still madly in love with her,<br>for no one would have been there to give me the reality check.",
+
+"...But I'm really glad that's not what happened.",
+
+"<span class='final'>I'M REALLY GLAD I MET YOU AKSHARA</span>"
+];
+
+let i=0;
+const textDiv=document.getElementById("text");
+
+function showText(){
+  textDiv.style.opacity=0;
+  setTimeout(()=>{
+    textDiv.innerHTML=lines[i];
+    textDiv.style.opacity=1;
+  },800);
+}
+
+function nextText(){
+  if(i < lines.length-1){
+    i++;
+    showText();
+  }
+}
+
+// first line
+showText();
+</script>
+
+</body>
+</html>
